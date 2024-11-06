@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1082374596556",
+    "project_id": "my-app-c3015",
+    "storage_bucket": "my-app-c3015.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082374596556:android:2960d720613d4528da1f69",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCJNJHdmsjplIFfYz1RaLoBlV0-ZIuGNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
