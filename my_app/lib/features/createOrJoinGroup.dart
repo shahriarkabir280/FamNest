@@ -32,7 +32,7 @@ class _CreateOrJoinGroupState extends State<createOrJoinGroup> {
                   color: Colors.teal[300],
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: AssetImage('assets/authentications/banner.png'), // Replace with your banner image
+                    image: AssetImage('assets/authentications/banner.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -156,11 +156,26 @@ class _CreateOrJoinGroupState extends State<createOrJoinGroup> {
                   // Done Button
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Done Action
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context)=>mainHomepage(groupName: "Test Group")),
-                      );
+                      // Validation Logic for Group Name
+                      String groupName = _groupNameController.text.trim();
+                      if (groupName.isEmpty || groupName.length < 4) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Group Name must be at least 4 characters",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        );
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => mainHomepage(groupName: groupName),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.teal[700],
