@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/features/splashScreen.dart';
-import 'package:testapp/authentications/loginScreen.dart';
+import 'package:my_app/features/splashScreen.dart';
+import 'package:my_app/authentications/loginScreen.dart';
 
 
 
