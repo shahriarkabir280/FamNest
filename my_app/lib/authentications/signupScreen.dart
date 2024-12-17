@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:testapp/validator.dart'; // Import the validators.dart file
-import 'package:testapp/termsofServicesandPrivacyPolicy.dart';
-import 'package:testapp/loginScreen.dart';
+import 'package:my_app/authentications/validator.dart'; // Import the validators.dart file
+import 'package:my_app/authentications/termsofServicesandPrivacyPolicy.dart';
+import 'package:my_app/authentications/loginScreen.dart';
 import 'package:testapp/backend_connections/FASTAPI.dart';
 final FASTAPIhere FastAPIonthego = FASTAPIhere();
 
