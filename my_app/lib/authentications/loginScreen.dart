@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:testapp/features/createOrJoinGroup.dart';
-import 'package:testapp/features/mainHomepage.dart';
+import 'package:my_app/features/createOrJoinGroup.dart';
+import 'package:my_app/features/mainHomepage.dart';
 // import 'package:testapp/create_join_group.dart';
-import 'package:testapp/authentications/validator.dart'; // Import the validators.dart file
-import 'package:testapp/authentications/signupScreen.dart'; // Assuming this is where your Sign Up page is located
-import 'package:testapp/backend_connections/FASTAPI.dart';
+import 'package:my_app/authentications/validator.dart'; // Import the validators.dart file
+import 'package:my_app/authentications/signupScreen.dart'; // Assuming this is where your Sign Up page is located
+import 'package:my_app/backend_connections/FASTAPI.dart';
 
 final FASTAPIhere FastAPIonthego = FASTAPIhere();
 // Global variable
