@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/authentications/PasswordGenerator.dart';
-import 'package:testapp/authentications/loginScreen.dart';
-import 'package:testapp/features/mainHomepage.dart';
+import 'package:my_app/authentications/PasswordGenerator.dart';
+import 'package:my_app/authentications/loginScreen.dart';
+import 'package:my_app/features/mainHomepage.dart';
 
-import 'package:testapp/backend_connections/FASTAPI.dart';
+import 'package:my_app/backend_connections/FASTAPI.dart';
 
 final FASTAPIhere FastAPIonthego = FASTAPIhere();
 
