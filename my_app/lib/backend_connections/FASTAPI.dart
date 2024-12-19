@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:testapp/backend_connections/api%20services/all_groups_info.dart';
-import 'package:testapp/backend_connections/api%20services/checking_one_group_condition.dart';
-import 'package:testapp/backend_connections/api%20services/user_join_group.dart';
-import 'package:testapp/backend_connections/api%20services/user_registration.dart';
-import 'package:testapp/backend_connections/api%20services/user_login_check.dart';
-import 'package:testapp/backend_connections/api%20services/user_create_group.dart';
-
-import 'api services/get_first_group.dart';
-import 'api services/get_name.dart';
-import 'api services/get_password.dart';
+import 'package:my_app/backend_connections/api%20services/all_groups_info.dart';
+import 'package:my_app/backend_connections/api%20services/checking_one_group_condition.dart';
+import 'package:my_app/backend_connections/api%20services/user_join_group.dart';
+import 'package:my_app/backend_connections/api%20services/user_registration.dart';
+import 'package:my_app/backend_connections/api%20services/user_login_check.dart';
+import 'package:my_app/backend_connections/api%20services/user_create_group.dart';
+import 'package:my_app/backend_connections/api%20services/get_first_group.dart';
+import 'package:my_app/backend_connections/api%20services/get_name.dart';
+import 'package:my_app/backend_connections/api%20services/get_password.dart';
 
 
 // fastapi ke msg pathacchi
