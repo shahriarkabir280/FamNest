@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/Models/DataModel.dart';
+import 'package:my_app/Models/DataModel.dart';
 
 class CategoryDescriptionList extends StatelessWidget {
   final DataModel dataModel;
