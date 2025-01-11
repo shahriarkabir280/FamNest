@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_app/Models/UserState.dart';
-import 'package:my_app/features/TimeCapsule/timeCapsuleScreen.dart';
-import 'package:my_app/features/EventPlanning/eventPlanningPage.dart';
 import 'package:my_app/features/Document%20store/document_storage_page.dart';
 import 'package:my_app/features/Expense%20Tracking/expenseTrackingScreen.dart';
 import '../../authentications/loginScreen.dart';
@@ -11,9 +9,12 @@ import '../Drawer/about.dart';
 import '../Drawer/changePassword.dart';
 import '../Drawer/privacyPolicy.dart';
 import '../Drawer/termsAndConditions.dart';
-import 'package:my_app/features/GroupsHandling/createandjoingroup.dart';
-import 'package:my_app/features/GroupsHandling/groupScreen.dart';
 import 'package:my_app/features/Drawer/editProfile.dart';
+
+import '../Event Planning/eventPlanningPage.dart';
+import '../Group Handling/createandjoingroup.dart';
+import '../Group Handling/groupScreen.dart';
+import '../Time Capsule/timeCapsuleScreen.dart';
 
 class mainHomepage extends StatefulWidget {
   @override
