@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/features/Document store/category_page.dart';
-import 'package:my_app/widgets/grid_view_tile.dart';
+import 'package:my_app/features/Document%20store/grid_view_tile.dart';
 
 class documentStoragePage extends StatefulWidget {
   @override
