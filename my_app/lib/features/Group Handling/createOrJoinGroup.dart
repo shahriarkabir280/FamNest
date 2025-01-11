@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../backend_connections/FASTAPI.dart';
 import '../Models/UserState.dart';
-import '../features/mainHomepage.dart';
+import 'HomepageHandling/mainHomepage.dart';
 import '../authentications/loginScreen.dart';
 import '../authentications/PasswordGenerator.dart';
 
