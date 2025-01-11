@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../backend_connections/FASTAPI.dart';
-import '../Models/UserState.dart';
-import 'HomepageHandling/mainHomepage.dart';
-import '../authentications/loginScreen.dart';
-import '../authentications/PasswordGenerator.dart';
+import '../../backend_connections/FASTAPI.dart';
+import '../../Models/UserState.dart';
+import '../HomepageHandling/mainHomepage.dart';
+import '../../authentications/loginScreen.dart';
+import '../../authentications/PasswordGenerator.dart';
 
 class CreateOrJoinGroup extends StatefulWidget {
   @override
@@ -183,12 +183,9 @@ class _CreateOrJoinGroupState extends State<CreateOrJoinGroup> {
                         try {
                           final groupData = await fastAPI.findGroup(context, groupCode);
                           if (groupData.isNotEmpty) {
-                            userState.currentUser?.groups.add(
-                              Group(
-                                groupName: groupData['group_name'],
-                                groupCode: groupCode,
-                              ),
-                            );
+                            final group = Group.fromJson(groupData);
+                            userState.addGroup(group);
+                            userState.setCurrentGroup(group);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("Joined Group Successfully"),
@@ -226,14 +223,11 @@ class _CreateOrJoinGroupState extends State<CreateOrJoinGroup> {
                           final response = await fastAPI.createGroup(context, email, groupName, password);
 
                           if (response['success'] == true) {
-                            final groupData = response['group'];
-                            userState.currentUser?.groups.add(
-                              Group(
-                                groupName: groupData['group_name'],
-                                groupCode: groupData['group_code'],
-                                createdAt: groupData['created_at'],
-                              ),
-                            );
+                            final group = Group.fromJson(response['group']);
+
+                            userState.addGroup(group);
+                            userState.setCurrentGroup(group);
+
 
                             showDialog(
                               context: context,
