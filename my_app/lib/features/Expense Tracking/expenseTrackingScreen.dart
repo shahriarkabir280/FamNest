@@ -7,7 +7,7 @@ import 'package:my_app/features/Expense Tracking/widgets/navigation_bar.dart';
 import 'package:my_app/features/Expense Tracking/Budgets/budget.dart';
 import 'package:my_app/features/Expense Tracking/Expenses/add_expense.dart';
 import 'package:my_app/Models/DataModel.dart';
-import 'package:my_app/features/mainHomepage.dart';
+import 'package:my_app/features/HomepageHandling/mainHomepage.dart';
 
 class ExpenseTrackingScreen extends StatelessWidget {
   //final String groupName;
