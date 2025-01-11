@@ -1,6 +1,6 @@
 // ForgotPasswordScreen.dart
 import 'package:flutter/material.dart';
-import 'package:my_app//backend_connections/FASTAPI.dart';
+import 'package:my_app/backend_connections/FASTAPI.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override

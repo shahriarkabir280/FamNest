@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:my_app/features/EventPlanning/eventPlanningPage.dart';
+import '../../../features/Event Planning/eventPlanningPage.dart';
 
 class EventService {
   static const String baseUrl = 'https://famnest.onrender.com'; // Replace with your backend URL
