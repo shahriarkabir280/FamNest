@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:my_app/features/Expense Tracking/Budgets/budget.dart';
-import 'package:my_app/features/Expense Tracking/Expenses/expense.dart';
-import 'package:my_app/features/HomepageHandling/mainHomepage.dart';
+  import 'package:flutter/material.dart';
+import 'package:testapp/features/Expense Tracking/Budgets/budget.dart';
+import 'package:testapp/features/Expense Tracking/Expenses/expense.dart';
+import 'package:testapp/features/HomepageHandling/mainHomepage.dart';
+
+import '../Expenses/analytics.dart';
 
 class NavigationBarWidget extends StatelessWidget {
   /*final String groupName;
@@ -60,9 +62,11 @@ class NavigationBarWidget extends StatelessWidget {
             break;
           case 3:
           // Navigate to Analytics Screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Analytics Screen is under development.")),
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AnalyticsScreen()),
             );
+
             break;
           default:
             break;
