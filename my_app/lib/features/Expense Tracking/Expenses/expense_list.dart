@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:testapp/Models/DataModel.dart'; // Import the DataModel class
 
 class ExpenseList extends StatelessWidget {
-  final List<Map<String, dynamic>> expenses;
+  final List<Expense> expenses; // Use the Expense model here
+  final Function(Expense) onDeleteExpense; // Modify the function signature to handle Expense objects
 
-  ExpenseList({required this.expenses});
+  const ExpenseList({super.key,
+    required this.expenses,
+    required this.onDeleteExpense,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,44 +28,45 @@ class ExpenseList extends StatelessWidget {
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
                   blurRadius: 10,
-                  offset: Offset(0, 5),
+                  offset: const Offset(0, 5),
                 ),
               ],
             ),
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Expense Details
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Date
                     Text(
-                      DateFormat.yMMMMd().format(expense['date']),
+                      DateFormat.yMMMMd().format(expense.date),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.teal.shade800,
                       ),
                     ),
-                    // Amount
+                    const SizedBox(height: 8),
+                    // Category
                     Text(
-                      '\$${expense['amount'].toStringAsFixed(2)}',
+                      expense.category,
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orangeAccent,
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
-                // Category
+                // Amount
                 Text(
-                  expense['category'],
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey.shade600,
+                  '৳${expense.amount.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orangeAccent,
                   ),
                 ),
               ],
