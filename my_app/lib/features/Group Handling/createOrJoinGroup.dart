@@ -181,23 +181,29 @@ class _CreateOrJoinGroupState extends State<CreateOrJoinGroup> {
 
                       if (groupCode.isNotEmpty) {
                         try {
-                          final groupData = await fastAPI.findGroup(context, groupCode);
-                          if (groupData.isNotEmpty) {
-                            final group = Group.fromJson(groupData);
+
+                          final response = await fastAPI.joinGroup(context, email, groupCode);
+                          if(response['success']=true){
+
+
+                            final group = Group.fromJson(response['group']);
+
                             userState.addGroup(group);
                             userState.setCurrentGroup(group);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Joined Group Successfully"),
-                                backgroundColor: Colors.lightGreen,
-                              ),
-                            );
+
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(builder: (context) => mainHomepage()),
                             );
-                          } else {
-                            throw Exception("Group not found");
+
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Failed to join group"),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
                           }
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(

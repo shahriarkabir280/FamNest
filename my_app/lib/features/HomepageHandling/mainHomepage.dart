@@ -495,7 +495,7 @@ class _MainHomepageState extends State<mainHomepage> {
     if (index == 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => ExpenseTrackingScreen()));
     } else if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => documentStoragePage()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DocumentStoragePage()));
     } else if (index == 2) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => eventPlannerPage()));
     } else if (index == 3) {

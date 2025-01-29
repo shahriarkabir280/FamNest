@@ -1,22 +1,141 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
-import 'package:my_app/features/Document store/category_page.dart';
-import 'package:my_app/features/Document%20store/grid_view_tile.dart';
+import 'package:provider/provider.dart';
+import '../../Models/UserState.dart';
+import '../../backend_connections/api services/features/Document_Services.dart';
+import 'category_page.dart';
 
-class documentStoragePage extends StatefulWidget {
+class DocumentStoragePage extends StatefulWidget {
   @override
   _DocumentStoragePageState createState() => _DocumentStoragePageState();
 }
 
-class _DocumentStoragePageState extends State<documentStoragePage> {
-  // List to hold the categories
-  List<String> categories = ['Educational', 'Medical', 'Financial', 'Personal'];
+class _DocumentStoragePageState extends State<DocumentStoragePage> {
+  List<Map<String, dynamic>> categories = [];
+  bool isLoading = true;
 
-  // Function to add a new category
-  void _addCategory(String newCategory) {
-    setState(() {
-      categories.add(newCategory);
-    });
+  // Colors for categories
+  final List<Color> categoryColors = [
+    Colors.teal.shade100,
+    Colors.orange.shade100,
+    Colors.pink.shade100,
+    Colors.purple.shade100,
+    Colors.green.shade100,
+    Colors.yellow.shade100,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
   }
+  /// Fetch categories from backend
+  Future<void> _fetchCategories() async {
+    final userState = Provider.of<UserState>(context, listen: false);
+    final currentGroup = userState.currentUser?.currentGroup;
+
+    if (currentGroup != null) {
+      try {
+        final fetchedCategories = await DocumentServices.getCategories(currentGroup.groupCode);
+        setState(() {
+          categories = fetchedCategories;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to fetch categories: $e")),
+        );
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  /// Create a new category
+  Future<void> _addCategory(String newCategory) async {
+    final userState = Provider.of<UserState>(context, listen: false);
+    final currentGroup = userState.currentUser?.currentGroup;
+
+    if (currentGroup != null) {
+      try {
+        final response = await DocumentServices.createCategory(currentGroup.groupCode, newCategory);
+        setState(() {
+          categories.add({
+          "category_name": newCategory,
+          "is_preset": false,
+          "id": response["category_id"],
+          });
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Category added successfully")),
+            );
+            } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to add category: $e")),
+            );
+            }
+        }
+        }
+
+
+
+  // Rename a category
+  Future<void> _renameCategory(String newName, int index) async {
+    final userState = Provider.of<UserState>(context, listen: false);
+    final currentGroup = userState.currentUser?.currentGroup;
+
+    if (currentGroup != null) {
+      try {
+        await DocumentServices().renameCategory(
+          categories[index]["id"],
+          currentGroup.groupCode,
+          newName,
+        );
+        setState(() {
+          categories[index]["category_name"] = newName;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Category renamed successfully")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to rename category: $e")),
+        );
+      }
+    }
+  }
+
+// Delete a category
+  Future<void> _deleteCategory(int index) async {
+    final userState = Provider.of<UserState>(context, listen: false);
+    final currentGroup = userState.currentUser?.currentGroup;
+
+    if (currentGroup != null) {
+      try {
+        await DocumentServices().deleteCategory(
+          categories[index]["id"],
+          currentGroup.groupCode,
+        );
+        setState(() {
+          categories.removeAt(index);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Category deleted successfully")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to delete category: $e")),
+        );
+      }
+    }
+  }
+
+
 
   // Show dialog for creating a new category
   void _showAddCategoryDialog(BuildContext context) {
@@ -33,9 +152,7 @@ class _DocumentStoragePageState extends State<documentStoragePage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: Text('Cancel'),
             ),
             TextButton(
@@ -46,7 +163,42 @@ class _DocumentStoragePageState extends State<documentStoragePage> {
                   Navigator.pop(context);
                 }
               },
-              child: Text('OK'),
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Show dialog to rename category
+  void _showRenameDialog(int index) {
+    final TextEditingController _renameController = TextEditingController();
+    _renameController.text = categories[index]["category_name"];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Rename Category"),
+          content: TextField(
+            controller: _renameController,
+            decoration: InputDecoration(hintText: "Enter new category name"),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                final newName = _renameController.text.trim();
+                if (newName.isNotEmpty) {
+                  _renameCategory(newName, index);
+                  Navigator.pop(context);
+                }
+              },
+              child: Text("Rename"),
             ),
           ],
         );
@@ -58,35 +210,115 @@ class _DocumentStoragePageState extends State<documentStoragePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Documents"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+        title: Text("Document Categories"),
+        backgroundColor: Colors.teal,
+        centerTitle: true,
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : categories.isEmpty
+          ? Center(
+        child: Text(
+          "No categories available.",
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+      )
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 16,
+            crossAxisSpacing: 16,
+            childAspectRatio: 1.0,
+          ),
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            final category = categories[index];
+            final color = categoryColors[index % categoryColors.length];
+            return _buildCategoryCard(category, color, index);
+          },
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text("Categories", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: categories.map((category) {
-                return GridViewTile(category: category);
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddCategoryDialog(context); // Show the dialog to create a new category
-        },
+        onPressed: () => _showAddCategoryDialog(context),
         child: Icon(Icons.add),
+        backgroundColor: Colors.teal,
       ),
     );
   }
+
+  Widget _buildCategoryCard(Map<String, dynamic> category, Color color, int index) {
+    final bool isPreset = category["is_preset"];
+    final String categoryName = category["category_name"];
+    final String categoryId = category["id"]; // Assuming 'id' is the unique identifier.
+
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          // Navigate to CategoryPage with parameters
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => CategoryPage(
+                categoryId: categoryId,
+                categoryName: categoryName,
+              ),
+            ),
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Icon(
+                    isPreset ? Icons.folder : Icons.folder_open,
+                    size: 40,
+                    color: Colors.teal.shade700,
+                  ),
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      if (value == "Rename") {
+                        _showRenameDialog(index);
+                      } else if (value == "Delete") {
+                        _deleteCategory(index);
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(value: "Rename", child: Text("Rename")),
+                      PopupMenuItem(value: "Delete", child: Text("Delete")),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Text(
+                categoryName,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }

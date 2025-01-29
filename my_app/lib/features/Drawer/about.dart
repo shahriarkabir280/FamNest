@@ -28,18 +28,20 @@ class About extends StatelessWidget {
             const Text(
               'Welcome to Famnest!',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
-            const Text('FemNest is your all-in-one solution for managing life '
-                'essential tasks and memories. Designed with families in mind,'
-                ' the app helps you seamlessly store important documents, track expenses, '
-                'and create a personal time capsule to preserve precious moments. '
+            const Text('Team Name : Team Extreme\n'
+                ' Tawyabul Islam Tamim - 04\n'
+                ' Md. Shahriar Kabir - 20\n '
+                'Ovijit Chandra Balo - 28\n'
+                ' Faiaz Mahmud Ifti - 46\n '
+
                ,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 25),
               textAlign: TextAlign.center,
             ),
           ],

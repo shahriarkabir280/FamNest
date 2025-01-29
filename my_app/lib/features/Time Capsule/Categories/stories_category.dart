@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/features/TimeCapsule/timeCapsuleScreen.dart';
 import '../../gradient_color.dart';
 
 class StoriesCategory extends StatelessWidget {
