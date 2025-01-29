@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/features/Expense Tracking/Budgets/budget.dart';
-import 'package:testapp/features/Expense Tracking/Expenses/expense.dart';
+import 'package:my_app/features/Expense Tracking/Budgets/budget.dart';
+import 'package:my_app/features/Expense Tracking/Expenses/expense.dart';
 
-import 'package:testapp/features/Expense Tracking/Analytics/analytics.dart';
+import 'package:my_app/features/Expense Tracking/Analytics/analytics.dart';
 
 class NavigationBarWidget extends StatelessWidget {
   const NavigationBarWidget({super.key});
