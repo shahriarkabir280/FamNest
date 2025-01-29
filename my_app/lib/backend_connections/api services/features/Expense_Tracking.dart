@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:testapp/Models/DataModel.dart';
+import 'package:my_app/Models/DataModel.dart';
 
 class BudgetService {
   static const String baseUrl='https://famnest.onrender.com';
