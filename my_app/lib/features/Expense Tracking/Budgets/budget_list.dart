@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testapp/Models/DataModel.dart'; // Import your data model file here
+import 'package:my_app/Models/DataModel.dart'; // Import your data model file here
 
 class BudgetList extends StatelessWidget {
   final List<Budget> budgets;
