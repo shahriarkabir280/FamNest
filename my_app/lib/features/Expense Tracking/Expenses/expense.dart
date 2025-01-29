@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:testapp/Models/DataModel.dart';
-import 'package:testapp/features/Expense Tracking/Expenses/add_expense.dart';
-import 'package:testapp/features/Expense Tracking/Expenses/expense_list.dart';
+import 'package:my_app/Models/DataModel.dart';
+import 'package:my_app/features/Expense Tracking/Expenses/add_expense.dart';
+import 'package:my_app/features/Expense Tracking/Expenses/expense_list.dart';
 import '../../../Models/UserState.dart';
 import '../../../backend_connections/api services/features/Expense_Tracking.dart';
 
