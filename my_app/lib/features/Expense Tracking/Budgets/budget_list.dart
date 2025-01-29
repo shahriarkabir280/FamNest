@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:testapp/Models/DataModel.dart'; // Import your data model file here
 
 class BudgetList extends StatelessWidget {
-  final List<Map<String, dynamic>> budgets;
-  final Function(Map<String, dynamic>) onEditBudget;
+  final List<Budget> budgets;
+  final Function(Budget) onEditBudget;
+  final Function(Budget) onDeleteBudget;
+  final Function(Budget) onRenameBudget;
 
-  BudgetList({required this.budgets, required this.onEditBudget});
+  const BudgetList({
+    required this.budgets,
+    required this.onEditBudget,
+    required this.onDeleteBudget,
+    required this.onRenameBudget,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,55 +20,29 @@ class BudgetList extends StatelessWidget {
       itemCount: budgets.length,
       itemBuilder: (context, index) {
         final budget = budgets[index];
-        final percentage = (budget['spent'] / budget['amount']) * 100;
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: GestureDetector(
-            onTap: () {
-              // Logic to view details can be added here
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    budget['category'],
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  LinearProgressIndicator(
-                    value: percentage / 100,
-                    backgroundColor: Colors.grey.shade200,
-                    color: Colors.teal,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Spent ${budget['spent']} of ${budget['amount']}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                    ),
-                  ),
-                ],
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            title: Text(
+              budget.category,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            subtitle: Text(
+              'Amount: ৳${budget.amount.toStringAsFixed(2)}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            // Removed the trailing icons for delete and rename
           ),
         );
       },
