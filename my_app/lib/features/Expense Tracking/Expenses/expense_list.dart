@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:testapp/Models/DataModel.dart'; // Import the DataModel class
+import 'package:my_app/Models/DataModel.dart'; // Import the DataModel class
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> expenses; // Use the Expense model here
