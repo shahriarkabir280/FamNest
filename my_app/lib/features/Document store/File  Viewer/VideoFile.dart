@@ -47,101 +47,113 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: Text("Video Viewer", style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(
+        title: Text("Video Viewer", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.teal,),
-      body: Column(
-        children: [
-          Expanded(
-            child: Center(
-              child: _controller.value.isInitialized
-                  ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-                  : CircularProgressIndicator(),
+        backgroundColor: Colors.teal,
+      ),
+      body: SafeArea( // Prevents overlapping with system UI
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: _controller.value.isInitialized
+                    ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+                    : CircularProgressIndicator(),
+              ),
             ),
-          ),
-          if (_controller.value.isInitialized)
-            Column(
-              children: [
-                VideoProgressIndicator(
-                  _controller,
-                  allowScrubbing: true,
-                  colors: VideoProgressColors(
-                    playedColor: Colors.teal,
-                    bufferedColor: Colors.grey,
-                    backgroundColor: Colors.black26,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _formatDuration(_currentPosition),
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      Text(
-                        _formatDuration(_controller.value.duration),
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            if (_controller.value.isInitialized)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // Avoid stretching
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.replay_10),
-                      onPressed: () {
-                        final newPosition = _controller.value.position - Duration(seconds: 10);
-                        _controller.seekTo(newPosition > Duration.zero ? newPosition : Duration.zero);
-                      },
+                    VideoProgressIndicator(
+                      _controller,
+                      allowScrubbing: true,
+                      colors: VideoProgressColors(
+                        playedColor: Colors.teal,
+                        bufferedColor: Colors.grey,
+                        backgroundColor: Colors.black26,
+                      ),
                     ),
-                    IconButton(
-                      icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                      iconSize: 48,
-                      onPressed: () {
-                        setState(() {
-                          if (_isPlaying) {
-                            _controller.pause();
-                          } else {
-                            _controller.play();
-                          }
-                          _isPlaying = !_isPlaying;
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.forward_10),
-                      onPressed: () {
-                        final newPosition = _controller.value.position + Duration(seconds: 10);
-                        if (newPosition < _controller.value.duration) {
-                          _controller.seekTo(newPosition);
-                        }
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.fullscreen),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => FullscreenVideoPlayer(controller: _controller),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _formatDuration(_currentPosition),
+                            style: TextStyle(fontSize: 14),
                           ),
-                        );
-                      },
+                          Text(
+                            _formatDuration(_controller.value.duration),
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0), // Prevent overlap with bottom
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.replay_10),
+                            onPressed: () {
+                              final newPosition = _controller.value.position - Duration(seconds: 10);
+                              _controller.seekTo(newPosition > Duration.zero ? newPosition : Duration.zero);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                            iconSize: 48,
+                            onPressed: () {
+                              setState(() {
+                                if (_isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  _controller.play();
+                                }
+                                _isPlaying = !_isPlaying;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.forward_10),
+                            onPressed: () {
+                              final newPosition = _controller.value.position + Duration(seconds: 10);
+                              if (newPosition < _controller.value.duration) {
+                                _controller.seekTo(newPosition);
+                              }
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.fullscreen),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FullscreenVideoPlayer(controller: _controller),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-        ],
+              ),
+          ],
+        ),
       ),
     );
   }
+
 }
 
 class FullscreenVideoPlayer extends StatelessWidget {

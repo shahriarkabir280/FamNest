@@ -98,7 +98,7 @@ class _CategoryPageState extends State<CategoryPage> {
         centerTitle: true,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Colors.teal))
           : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
