@@ -94,6 +94,7 @@ class _SignupScreenState extends State<signUpScreen> {
                         _isChecked = value!;
                       });
                     },
+                    activeColor: Colors.teal,
                   ),
                   Expanded(
                     child: RichText(
