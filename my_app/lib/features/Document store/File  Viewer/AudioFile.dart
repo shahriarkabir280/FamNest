@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,6 +15,8 @@ class AudioPlayerScreen extends StatefulWidget {
 
 class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   late AudioPlayer _audioPlayer;
+  late StreamSubscription<PlayerState> _playerStateSubscription;
+  bool isSeeking = false; // Flag to indicate if a seek operation is in progress
 
   @override
   void initState() {
@@ -24,6 +28,18 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   Future<void> _initializeAudio() async {
     try {
       await _audioPlayer.setUrl(widget.audioUrl);
+      // Subscribe to player state updates to handle seeking properly
+      _playerStateSubscription = _audioPlayer.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.loading || state.processingState == ProcessingState.buffering) {
+          setState(() {
+            isSeeking = true;
+          });
+        } else {
+          setState(() {
+            isSeeking = false;
+          });
+        }
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error loading audio: $e")),
@@ -33,6 +49,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
 
   @override
   void dispose() {
+    _playerStateSubscription.cancel();
     _audioPlayer.dispose();
     super.dispose();
   }
@@ -50,9 +67,11 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: Text("Audio Viewer", style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(
+        title: Text("Audio Player", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.teal,),
+        backgroundColor: Colors.teal,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -64,14 +83,29 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                 final durationState = snapshot.data;
                 final position = durationState?.position ?? Duration.zero;
                 final duration = durationState?.duration ?? Duration.zero;
+
                 return Column(
                   children: [
-                    Slider(
-                      value: position.inSeconds.toDouble(),
-                      max: duration.inSeconds.toDouble(),
-                      onChanged: (value) {
-                        _audioPlayer.seek(Duration(seconds: value.toInt()));
-                      },
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackHeight: 4,
+                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8),
+                        overlayShape: RoundSliderOverlayShape(overlayRadius: 12),
+                      ),
+                      child: Slider(
+                        value: position.inMilliseconds.toDouble(),
+                        min: 0,
+                        max: duration.inMilliseconds.toDouble(),
+                        activeColor: Colors.teal,
+                        inactiveColor: Colors.grey.shade400,
+                        onChanged: (value) {
+                          // Seek operation but only when not in loading or buffering state
+                          if (_audioPlayer.playerState.processingState != ProcessingState.loading &&
+                              _audioPlayer.playerState.processingState != ProcessingState.buffering) {
+                            _audioPlayer.seek(Duration(milliseconds: value.toInt()));
+                          }
+                        },
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,7 +123,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.replay_10),
+                  icon: Icon(Icons.replay_10, size: 32, color: Colors.teal),
                   onPressed: () {
                     _audioPlayer.seek(
                       _audioPlayer.position - Duration(seconds: 10),
@@ -101,28 +135,25 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
                   builder: (context, snapshot) {
                     final playerState = snapshot.data;
                     final isPlaying = playerState?.playing ?? false;
-                    final processingState = playerState?.processingState;
 
-                    if (processingState == ProcessingState.loading ||
-                        processingState == ProcessingState.buffering) {
-                      return CircularProgressIndicator();
-                    } else if (isPlaying) {
-                      return IconButton(
-                        icon: Icon(Icons.pause),
-                        iconSize: 64,
-                        onPressed: () => _audioPlayer.pause(),
-                      );
-                    } else {
-                      return IconButton(
-                        icon: Icon(Icons.play_arrow),
-                        iconSize: 64,
-                        onPressed: () => _audioPlayer.play(),
-                      );
-                    }
+                    return IconButton(
+                      icon: Icon(
+                        isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                        size: 64,
+                        color: Colors.teal,
+                      ),
+                      onPressed: () {
+                        if (isPlaying) {
+                          _audioPlayer.pause();
+                        } else {
+                          _audioPlayer.play();
+                        }
+                      },
+                    );
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.forward_10),
+                  icon: Icon(Icons.forward_10, size: 32, color: Colors.teal),
                   onPressed: () {
                     _audioPlayer.seek(
                       _audioPlayer.position + Duration(seconds: 10),
