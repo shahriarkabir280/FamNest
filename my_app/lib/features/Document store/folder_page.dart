@@ -216,12 +216,22 @@ class _FolderPageState extends State<FolderPage> {
         title: Text('Create New Folder'),
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: 'Enter folder name'),
+          //decoration: InputDecoration(hintText: 'Enter folder name'),
+          decoration: InputDecoration(
+            hintText: "Enter new folder name",
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.teal, width: 2.0), // Teal underline when active
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.teal.shade300, width: 1.5), // Teal underline when inactive
+            ),
+          ),
+
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('Cancel',style: TextStyle(color: Colors.teal)),
           ),
           TextButton(
             onPressed: () async {
@@ -251,7 +261,7 @@ class _FolderPageState extends State<FolderPage> {
                 }
               }
             },
-            child: Text('Create'),
+            child: Text('Create',style: TextStyle(color: Colors.teal)),
           ),
         ],
       ),
