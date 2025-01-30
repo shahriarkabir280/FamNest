@@ -171,7 +171,7 @@ class _DocumentStoragePageState extends State<DocumentStoragePage> {
     );
   }
 
-  // Show dialog to rename category
+
   void _showRenameDialog(int index) {
     final TextEditingController _renameController = TextEditingController();
     _renameController.text = categories[index]["category_name"];
@@ -181,14 +181,34 @@ class _DocumentStoragePageState extends State<DocumentStoragePage> {
       builder: (context) {
         return AlertDialog(
           title: Text("Rename Category"),
-          content: TextField(
-            controller: _renameController,
-            decoration: InputDecoration(hintText: "Enter new category name"),
+          content: Theme(
+            data: Theme.of(context).copyWith(
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: Colors.teal, // Cursor color
+                selectionHandleColor: Colors.teal, // Bottom circle (caret handle) color
+              ),
+            ),
+            child: TextField(
+              controller: _renameController,
+              cursorColor: Colors.teal, // Cursor color
+              decoration: InputDecoration(
+                hintText: "Enter new category name",
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.teal, width: 2.0), // Teal underline when active
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.teal.shade300, width: 1.5), // Teal underline when inactive
+                ),
+              ),
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Colors.teal), // Teal color for cancel button
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -198,13 +218,17 @@ class _DocumentStoragePageState extends State<DocumentStoragePage> {
                   Navigator.pop(context);
                 }
               },
-              child: Text("Rename"),
+              child: Text(
+                "Rename",
+                style: TextStyle(color: Colors.teal), // Teal color for Rename button
+              ),
             ),
           ],
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +266,7 @@ class _DocumentStoragePageState extends State<DocumentStoragePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCategoryDialog(context),
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.white),
         backgroundColor: Colors.teal,
       ),
     );
