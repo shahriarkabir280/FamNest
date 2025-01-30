@@ -48,6 +48,15 @@ class _FolderPageState extends State<FolderPage> {
   }
 
 
+  int _selectedIndex = -1; // -1 means no button is selected
+
+  void _onButtonPressed(int index, VoidCallback action) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    action();
+  }
+
 
   void _viewFile(Map<String, dynamic> file)async {
     final fileUrl = file['cloudinary_url'];
@@ -264,7 +273,7 @@ class _FolderPageState extends State<FolderPage> {
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Colors.teal))
           : ListView(
         children: [
           // Subfolders Section
@@ -435,9 +444,10 @@ class _FolderPageState extends State<FolderPage> {
             IconButton(
               icon: Icon(
                 Icons.share,
-                color: Colors.teal.shade400, // Selected color (active state)
+                color: _selectedIndex == 0 ? Colors.teal : Colors.grey.shade600, // Selected color (active state)
               ),
-              onPressed: _shareFiles, // Function to handle file sharing
+             // onPressed: _shareFiles, // Function to handle file sharing
+              onPressed: ()=>_onButtonPressed(0, _shareFiles),
               splashColor: Colors.teal.shade200, // Splash effect for interaction
               tooltip: "Share Files", // Tooltip for better UX
             ),
@@ -446,9 +456,10 @@ class _FolderPageState extends State<FolderPage> {
             IconButton(
               icon: Icon(
                 Icons.download,
-                color: Colors.grey.shade600, // Unselected color (inactive state)
+                color: _selectedIndex == 1 ? Colors.teal : Colors.grey.shade600,// Unselected color (inactive state)
               ),
-              onPressed: () => openDownloadedFile(), // Pass the function reference
+             // onPressed: () => openDownloadedFile(), // Pass the function reference
+              onPressed: ()=>_onButtonPressed(1, openDownloadedFile),
               splashColor: Colors.teal.shade200,
               tooltip: "Download Files",
             ),
@@ -457,9 +468,10 @@ class _FolderPageState extends State<FolderPage> {
             IconButton(
               icon: Icon(
                 Icons.delete,
-                color: Colors.grey.shade600,
+                color: _selectedIndex == 2 ? Colors.teal : Colors.grey.shade600,
               ),
-              onPressed: _deleteFiles, // Function to handle file deletion
+              //onPressed: _deleteFiles, // Function to handle file deletion
+              onPressed: ()=>_onButtonPressed(2,_deleteFiles),
               splashColor: Colors.teal.shade200,
               tooltip: "Delete Files",
             ),
@@ -469,9 +481,10 @@ class _FolderPageState extends State<FolderPage> {
               IconButton(
                 icon: Icon(
                   Icons.drive_file_rename_outline,
-                  color: Colors.grey.shade600,
+                  color: _selectedIndex == 3 ? Colors.teal : Colors.grey.shade600,
                 ),
-                onPressed: _renameFile, // Function to handle renaming files
+                //onPressed: _renameFile, // Function to handle renaming files
+                onPressed: ()=>_onButtonPressed(3, _renameFile),
                 splashColor: Colors.teal.shade200,
                 tooltip: "Rename File",
               ),
@@ -506,9 +519,7 @@ class _FolderPageState extends State<FolderPage> {
           fileUrls.join('\n'), // Join URLs for sharing
           subject: 'Check out these files!',
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Files shared successfully')),
-        );
+
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error sharing files: $e')),
@@ -706,16 +717,33 @@ class _FolderPageState extends State<FolderPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Rename File'),
-          content: TextField(
-            controller: nameController,
-            decoration: InputDecoration(hintText: "Enter new file name"),
+          content: Theme(
+            data: Theme.of(context).copyWith(
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: Colors.teal, // Cursor color
+                selectionHandleColor: Colors.teal, // Bottom circle (caret handle) color
+              ),
+            ),
+            child: TextField(
+              controller: nameController,
+              cursorColor: Colors.teal, // Cursor color
+              decoration: InputDecoration(
+                hintText: "Enter new file name",
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.teal, width: 2.0), // Teal underline when active
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.teal.shade300, width: 1.5), // Teal underline when inactive
+                ),
+              ),
+            ),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: Text('Cancel',style: TextStyle(color: Colors.teal)),
             ),
             TextButton(
               onPressed: () async {
@@ -746,7 +774,7 @@ class _FolderPageState extends State<FolderPage> {
 
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: Text('Rename'),
+              child: Text('Rename',style: TextStyle(color: Colors.teal)),
             ),
           ],
         );
@@ -765,14 +793,26 @@ class _FolderPageState extends State<FolderPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Rename Folder'),
+
         content: TextField(
           controller: controller,
-          decoration: InputDecoration(hintText: 'Enter new folder name'),
+          cursorColor: Colors.teal,
+          //decoration: InputDecoration(hintText: 'Enter new folder name'),
+          decoration: InputDecoration(
+            hintText: "Enter new folder name",
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.teal, width: 2.0), // Teal underline when active
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.teal.shade300, width: 1.5), // Teal underline when inactive
+            ),
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('Cancel',style: TextStyle(color: Colors.teal)),
+
           ),
           TextButton(
             onPressed: () async {
@@ -800,7 +840,7 @@ class _FolderPageState extends State<FolderPage> {
                 }
               }
             },
-            child: Text('Rename'),
+            child: Text('Rename',style: TextStyle(color: Colors.teal)),
           ),
         ],
       ),
@@ -817,7 +857,7 @@ class _FolderPageState extends State<FolderPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text('Cancel',style: TextStyle(color: Colors.teal)),
           ),
           TextButton(
             onPressed: () async {
@@ -837,7 +877,7 @@ class _FolderPageState extends State<FolderPage> {
                 );
               }
             },
-            child: Text('Delete'),
+            child: Text('Delete',style: TextStyle(color: Colors.teal)),
           ),
         ],
       ),
