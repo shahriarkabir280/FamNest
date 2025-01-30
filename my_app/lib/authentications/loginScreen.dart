@@ -141,6 +141,7 @@ class _LoginScreenState extends State<loginScreen> {
   }) {
     return TextField(
       controller: controller,
+      cursorColor: Colors.teal,
       obscureText: isPassword ? !_isPasswordVisible : false,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.teal),
