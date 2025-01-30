@@ -244,6 +244,7 @@ class _SignupScreenState extends State<signUpScreen> {
     bool isPassword = false,
   }) {
     return TextField(
+      cursorColor: Colors.teal,
       controller: controller,
       obscureText: isPassword,
       decoration: InputDecoration(
@@ -273,6 +274,7 @@ class _SignupScreenState extends State<signUpScreen> {
     return TextField(
       controller: controller,
       obscureText: isPassword ? !_isPasswordVisible : false,
+      cursorColor: Colors.teal,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.teal),
         labelText: label,
@@ -311,6 +313,7 @@ class _SignupScreenState extends State<signUpScreen> {
     bool isPassword = false,
   }) {
     return TextField(
+      cursorColor: Colors.teal,
       controller: controller,
       obscureText: isPassword ? !_isConfirmPasswordVisible : false,
       decoration: InputDecoration(
