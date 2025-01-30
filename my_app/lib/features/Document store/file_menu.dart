@@ -37,9 +37,6 @@ class FileMenu extends StatelessWidget {
         fileUrl,
         subject: 'Check out this file!',
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('File shared successfully')),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error sharing file: $e')),
