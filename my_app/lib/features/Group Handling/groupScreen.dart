@@ -140,15 +140,14 @@ class _GroupsScreenState extends State<GroupsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea( // Ensures proper padding for the UI
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text("Groups"),
           backgroundColor: Colors.teal,
           elevation: 1,
         ),
         body: isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? Center(child: CircularProgressIndicator(color: Colors.teal))
             : groups.isEmpty // Check if no groups exist
             ? _buildNoGroupsPlaceholder(context) // Show placeholder UI
             : Column(
@@ -205,7 +204,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                     ),
                   ),
                   child: isMemberLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(child: CircularProgressIndicator(color: Colors.teal))
                       : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -269,8 +268,8 @@ class _GroupsScreenState extends State<GroupsScreen> {
               ),
           ],
         ),
-      ),
-    );
+      );
+
   }
 
   /// Builds a placeholder UI when no groups are available

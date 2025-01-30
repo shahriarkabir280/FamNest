@@ -23,8 +23,7 @@ class _CreateOrJoinGroupState extends State<CreateandJoinGroup> {
     final userState = Provider.of<UserState>(context, listen: false);
     final email = userState.currentUser?.email ?? '';
 
-    return SafeArea( // Wrap the entire Scaffold in a SafeArea
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.teal[50],
         body: SingleChildScrollView(
           child: Padding(
@@ -307,8 +306,8 @@ class _CreateOrJoinGroupState extends State<CreateandJoinGroup> {
             ),
           ),
         ),
-      ),
-    );
+      );
+
   }
 
   Widget _buildTextField({
