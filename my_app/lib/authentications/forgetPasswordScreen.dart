@@ -66,26 +66,41 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.teal),
                   prefixIcon: Icon(Icons.email, color: Colors.teal),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? CircularProgressIndicator(color: Colors.teal)
                   : ElevatedButton(
                 onPressed: _sendResetCode,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text('Send Reset Code'),
+                child: Text('Send Reset Code',style: TextStyle(color: Colors.white)),
+
               ),
             ] else ...[
               TextField(
                 controller: _resetCodeController,
                 decoration: InputDecoration(
                   labelText: 'Reset Code',
+                  labelStyle: TextStyle(color: Colors.teal),
                   prefixIcon: Icon(Icons.code, color: Colors.teal),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -94,19 +109,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'New Password',
+                  labelStyle: TextStyle(color: Colors.teal),
                   prefixIcon: Icon(Icons.lock, color: Colors.teal),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? CircularProgressIndicator(color: Colors.teal)
                   : ElevatedButton(
                 onPressed: _resetPassword,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.teal,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
-                child: Text('Reset Password'),
+                child: Text('Reset Password',style: TextStyle(color: Colors.white)),
+
               ),
             ],
           ],
