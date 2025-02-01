@@ -3,8 +3,8 @@ import 'dart:math';
 String generatePassword() {
   const String alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const String numbers = "0123456789";
-  // const String specialChars = "!@#\$%^&*()-_=+[]{}|;:,.<>?";
-  const String allChars = alphabets + numbers;
+  const String specialChars = "@()-_=+|;:?";
+  const String allChars = alphabets + numbers + specialChars;
 
   final Random random = Random();
   int length = random.nextInt(4) + 14; // length 14 15 16 hotel parbe
