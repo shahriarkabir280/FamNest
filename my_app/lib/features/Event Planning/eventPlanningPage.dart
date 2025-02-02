@@ -291,22 +291,48 @@ class _EventPlannerPageState extends State<eventPlannerPage> {
   }
 
 
-
-
-  void _openUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.inAppWebView, // Opens the URL within the app
-      );
+void _openUrl(String url) async {
+  try {
+    if (url.startsWith('intent://')) {
+      // Extract the fallback URL from the intent:// link
+      final fallbackUrl = _extractFallbackUrl(url);
+      if (fallbackUrl != null) {
+        final Uri uri = Uri.parse(fallbackUrl);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri, mode: LaunchMode.externalApplication);
+        } else {
+          throw 'Could not launch the fallback URL: $fallbackUrl';
+        }
+      } else {
+        throw 'No valid fallback URL found in the intent URL';
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Unable to open the URL")),
-      );
+      final Uri uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        throw 'Could not launch the URL: $url';
+      }
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Unable to open the URL: $e")),
+    );
   }
+}
+
+/// Extracts the fallback URL from an intent:// link
+String? _extractFallbackUrl(String intentUrl) {
+  final RegExp regex = RegExp(r'S\.browser_fallback_url=([^;]+)');
+  final match = regex.firstMatch(intentUrl);
+
+  if (match != null) {
+    final fallbackUrl = Uri.decodeFull(match.group(1)!);
+    return fallbackUrl;
+  }
+  return null;
+}
+
 
 
   void _showEventDetails(List<Event> events) {
