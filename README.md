@@ -32,7 +32,7 @@ Follow these steps to run FamNest on your local machine or Android device:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/FamNest.git
+git clone git@github.com:shahriarkabir280/FamNest.git
 
 ```
 ### 2. Open the Project
@@ -92,9 +92,6 @@ This generates an installable .apk file in build/app/outputs/flutter-apk/.
 - Push to the branch: git push origin feature/your-feature-name
 - Open a Pull Request.
 
-## License 
-
-This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Contact 
 
